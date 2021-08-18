@@ -1,0 +1,116 @@
+Microsoft Windows [Versión 10.0.19042.1165]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+
+NAVEGO EN LA RUTA PARA ACTIVAR UN AMBIENTE
+
+C:\coding_dojo\python_stack\Django\django_wizard>cd..
+
+C:\coding_dojo\python_stack\Django>cd..
+
+C:\coding_dojo\python_stack>cd my_environments
+
+C:\coding_dojo\python_stack\my_environments>cd Django_020822021
+
+C:\coding_dojo\python_stack\my_environments\Django_020822021>cd Scripts
+
+C:\coding_dojo\python_stack\my_environments\Django_020822021\Scripts>activate
+
+(Django_020822021) C:\coding_dojo\python_stack\my_environments\Django_020822021\Scripts>cd..
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+(Django_020822021) C:\coding_dojo\python_stack\Django>django-admin startproject django_wizard
+
+
+UNA VEZ AMBIENTE ACTIVO, VUWLVO EN LA RUTA HASTA LA CARPETA DJANGO, LUEGO PROJECTO DJANGO_WIZARD
+
+(Django_020822021) C:\coding_dojo\python_stack\my_environments\Django_020822021>cd..
+
+(Django_020822021) C:\coding_dojo\python_stack\my_environments>cd..
+
+(Django_020822021) C:\coding_dojo\python_stack>cd Django
+
+(Django_020822021) C:\coding_dojo\python_stack\Django>
+
+(Django_020822021) C:\coding_dojo\python_stack\Django>cd django_wizard
+    
+UNA VEZ LISTO EL MODELO PARA LA TABLA MIGRAMOS LA APLIACACION
+(Django_020822021) C:\coding_dojo\python_stack\Django\django_wizard>python manage.py makemigrations
+Migrations for 'wizard_app':
+  wizard_app\migrations\0001_initial.py
+    - Create model Wizard
+
+(Django_020822021) C:\coding_dojo\python_stack\Django\django_wizard>python manage.py migrate
+
+ACTIVAMOS EL SHELL PARA INGRESAR Datos O CONSULTAR
+
+(Django_020822021) C:\coding_dojo\python_stack\Django\django_wizard>python manage.py shell
+Python 3.9.5 (tags/v3.9.5:0a7dcbd, May  3 2021, 17:27:52) [MSC v.1928 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+
+IMPORTAMOS EL MODELO WIZARD DESDE LA APP WIZARD
+>>> from wizard_app.models import Wizard
+
+>>> Wizard.objects.all() #muestra todos los objetos
+<QuerySet []> # muestra que la bbdd esta vacia
+>>> Wizard.objects.create(name="harry potter", house="Griffindor", pet="Hedwig", year=5)  #(creamos un objeto con las caracteristicas solictadas en la tabla)
+<Wizard: Wizard object (1)>
+
+>>> Wizard.objects.create(name="hermione Granger", house="Griffindor", pet="Crookshanks", year=5)
+<Wizard: Wizard object (2)>
+
+>>> Wizard.objects.create(name="Luna Lovegood", house="Ravenclaw", pet="None", year="4")
+<Wizard: Wizard object (3)>
+
+>>> Wizard.objects.create(name="Padma Patil", house="Ravenclaw", pet="None", year="5")
+<Wizard: Wizard object (4)>
+
+>>> Wizard.objects.create(name="Draco Malfoy", house="Ravenclaw", pet="None", year="5")
+<Wizard: Wizard object (5)>
+
+>>> Wizard.objects.all()  #(devuelve todos los objetos)
+<QuerySet [<Wizard: Wizard object (1)>, <Wizard: Wizard object (2)>, <Wizard: Wizard object (3)>, <Wizard: Wizard object (4)>, <Wizard: Wizard object (5)>]>
+>>> Wizard.objects.get(id=1) #(devuelve el objeto con id 1) el get solo devuelve un objeto
+
+<Wizard: Wizard object (1)>
+>>> Wizard.objects.get(id=1).__dict__  #(devuelve la informacion como un diccionario)
+{'_state': <django.db.models.base.ModelState object at 0x0000024D97F6EE50>, 'id': 1, 'name': 'harry potter', 'house': 'Griffindor', 'pet': 'Hedwig', 'year': 5}
+
+Wizard.objects.get(id=1)
+Name:harry potter, House:Griffindor, Pet:Hedwig, Year: 5
+
+>>> Wizard.objects.last() #devuelve el ultimo elemento
+Name:Draco Malfoy, House:Ravenclaw, Pet:None, Year: 5
+
+>>> Wizard.objects.first()
+Name:harry potter, House:Griffindor, Pet:Hedwig, Year: 5
+>>> Wizard.objects.filter(house="Griffindor")  #hacemos un filtro para buscar solo a los griffindor
+<QuerySet [Name:harry potter, House:Griffindor, Pet:Hedwig, Year: 5, Name:hermione Granger, House:Griffindor, Pet:Crookshanks, Year: 5]>
+
+Wizard.objects.exclude(house="Griffindor") # excluimos de la busqueda a griifindor
+<QuerySet [Name:Luna Lovegood, House:Ravenclaw, Pet:None, Year: 4, Name:Padma Patil, House:Ravenclaw, Pet:None, Year: 5, Name:Draco Malfoy, House:Ravenclaw, Pet:None, Year: 5]>
+
+Wizard.objects.all().order_by("name") #ordenamos por nombre
+<QuerySet [Name:Draco Malfoy, House:Ravenclaw, Pet:None, Year: 5, Name:Luna Lovegood, House:Ravenclaw, Pet:None, Year: 4, Name:Padma Patil, House:Ravenclaw, Pet:None, Year: 5, Name:harry potter, House:Griffindor, Pet:Hedwig, Year: 5, Name:hermione Granger, House:Griffindor, Pet:Crookshanks, Year: 5]>
+
+Wizard.objects.all().order_by("-name")#ordenamos por nombre decendiente
+<QuerySet [Name:hermione Granger, House:Griffindor, Pet:Crookshanks, Year: 5, Name:harry potter, House:Griffindor, Pet:Hedwig, Year: 5, Name:Padma Patil, House:Ravenclaw, Pet:None, Year: 5, Name:Luna Lovegood, House:Ravenclaw, Pet:None, Year: 4, Name:Draco Malfoy, House:Ravenclaw, Pet:None, Year: 5]>
+>>>
+
+
+ACTUALIZAMOS LA INFORMACION DE LUNA LOVEGOOD
+Wizard_for_update= Wizard.objects.get(name="Luna Lovegood")
+>>> Wizard_for_update.pet="Garfield"
+>>> Wizard_for_update.save()
+>>> Wizard.objects.get(name="Luna Lovegood")
+Name:Luna Lovegood, House:Ravenclaw, Pet:Garfield, Year: 4
+>>>
+
+ Wizard_for_delete=Wizard.objects.get(id=5) #eliminamos el id 5
+>>> Wizard_for_delete.delete()
+(1, {'wizard_app.Wizard': 1})
+>>> 
